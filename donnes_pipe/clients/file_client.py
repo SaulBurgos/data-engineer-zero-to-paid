@@ -1,6 +1,7 @@
 # description: this file contains a class called "file_client" that is used to write a list of a dictionary into a file
 
 import json
+import os
 from donnes_pipe.connector_interfaces import ConnectClient
 
 
@@ -17,7 +18,9 @@ class FileClient(ConnectClient):
     def __exit__(self, exc_type, exc_value, exc_traceback):
         pass
 
-    # this method writes a list of a dictionary into a file
     def write_file(self, filename: str, extension: str, data: list[dict]):
+        folder_path = os.path.dirname(filename)
+        os.makedirs(folder_path, exist_ok=True)  # Create the folder if it doesn't exist
+
         with open(f"{filename}.{extension}", "w") as file:
             file.write(json.dumps(data, indent=4))

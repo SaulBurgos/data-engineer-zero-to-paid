@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from donnes_pipe.client_factory import get_connector_client
 from connectors.cat_connector import CatsConnector
 from connectors.public_api_connector import PublicApisConnector
+from connectors.s3_connector import S3Connector
 
 load_dotenv()
 
@@ -20,13 +21,18 @@ if __name__ == "__main__":
     # )
 
     # PUBLIC API CONNECTOR
-    source_client = get_connector_client("public_api_client")(config={})
-    destination_client = get_connector_client("file_client")(config={})
+    # source_client = get_connector_client("public_api_client")(config={})
+    # destination_client = get_connector_client("file_client")(config={})
 
-    PublicApisConnector().run(
+    # PublicApisConnector().run(
+    #     source_client=source_client,
+    #     destination_client=destination_client,
+    # )
+
+    # S3 CONNECTOR
+    source_client = get_connector_client("s3_client")(config={})
+    destination_client = get_connector_client("file_client")(config={})
+    S3Connector().run(
         source_client=source_client,
         destination_client=destination_client,
     )
-
-    
-    

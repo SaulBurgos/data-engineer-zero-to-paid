@@ -1,8 +1,9 @@
 import requests
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from donnes_pipe.connector_interfaces import ConnectorELT, ConnectClient, ConnectorTransformer
+from donnes_pipe.connector_interfaces import ConnectClient
 from donnes_pipe.utils.helpers import make_request
+
 
 @dataclass
 class CatAPIClient(ConnectClient):
@@ -17,7 +18,9 @@ class CatAPIClient(ConnectClient):
     @contextmanager
     def connect(self):
         try:
-            response = requests.get(self.API_URL + "/images/search", headers=self.headers)
+            response = requests.get(
+                self.API_URL + "/images/search", headers=self.headers
+            )
 
             if response.status_code != 200:
                 raise Exception(f"Connection failed to {self.name}")
@@ -46,7 +49,7 @@ class CatAPIClient(ConnectClient):
             return make_request(
                 method="GET", url=self.url + "/favourites", headers=self.headers
             )
-        
+
         def get_votes(self):
             return make_request(
                 method="GET", url=self.url + "/votes", headers=self.headers

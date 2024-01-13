@@ -26,7 +26,11 @@ class PublicApisConnector(ConnectorELT):
     def load_data(self, data, destination_client: ConnectClient):
         with destination_client.connect() as _client:
             client: FileClient = _client
-            client.write_file(data=data, filename="public_apis_list", extension="json")
+            client.write_file(
+                data=data,
+                filename="output/public_api/public_apis_list",
+                extension="json",
+            )
 
     # orchestrates the extract, transform, load process
     def run(
