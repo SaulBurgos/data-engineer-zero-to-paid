@@ -30,7 +30,12 @@ if __name__ == "__main__":
     # )
 
     # S3 CONNECTOR
-    source_client = get_connector_client("s3_client")(config={})
+    source_client = get_connector_client("s3_client")(
+        config={
+            "region_name": "us-east-1",
+            "bucket": "poc-s3-dev-static-site-platzi",
+        }
+    )
     destination_client = get_connector_client("file_client")(config={})
     S3Connector().run(
         source_client=source_client,

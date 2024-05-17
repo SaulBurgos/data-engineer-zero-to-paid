@@ -5,7 +5,15 @@ from donnes_pipe.connector_interfaces import ConnectorELT, ConnectClient
 @dataclass
 class S3Connector(ConnectorELT):
     def extract_data(self, source_client: ConnectClient) -> dict:
-        print("extracting")
+        results = {}
+
+        with source_client.connect_to_public() as client:
+            response_objects = client.api.list_objects()
+
+            for content in response_objects.get("Contents", []):
+                print(content["Key"])
+
+            return results
 
     def transform_data(self, raw_data):
         print("transforming")
@@ -18,7 +26,6 @@ class S3Connector(ConnectorELT):
         source_client: ConnectClient,
         destination_client: ConnectClient,
     ):
-        print("running")
-        data = self.extract_data(source_client={})
+        data = self.extract_data(source_client=source_client)
         transform_data = self.transform_data(data)
         self.load_data({}, destination_client={})
